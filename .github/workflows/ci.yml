@@ -129,7 +129,7 @@ jobs:
       fail-fast: false
       matrix:
         BRANCH:
-          - edge
+         # - edge
           - current
 
     steps:
@@ -190,29 +190,20 @@ jobs:
       fail-fast: false
       matrix:
         BRANCH:
-          - edge
+         # - edge
           - current
         RELEASE:
           # - focal # Ubuntu 20.04 LTS
-          - jammy # Ubuntu 22.04 LTS
+          - noble # Ubuntu 24.04 LTS
           # - lunar # Ubuntu 23.04
           # - buster # Debian 10
-          - bullseye # Debian 11
+          #- bullseye # Debian 11
           - bookworm # Debian 12
-          - sid # Debian unstable
+          #- sid # Debian unstable
         TYPE:
           - minimal
-          - cli
-          - desktop
-        include:
-          - TYPE: desktop
-            DESKTOP_ENVIRONMENT: xfce
-            DESKTOP_ENVIRONMENT_CONFIG_NAME: config_base
-            DESKTOP_APPGROUPS_SELECTED: ""
-        exclude:
-          - RELEASE: sid
-            TYPE: desktop
-
+          #- cli
+          #- desktop
     steps:
       - name: Import env
         run: |
@@ -238,7 +229,7 @@ jobs:
           done
 
       - name: Download debs
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: debs-${{ matrix.BRANCH }}
           path: output/debs/
@@ -317,7 +308,7 @@ jobs:
           done
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.RELEASE }}-${{ matrix.BRANCH }}-${{ matrix.TYPE == 'desktop' && matrix.DESKTOP_ENVIRONMENT || matrix.TYPE }}
           path: output/images/*
